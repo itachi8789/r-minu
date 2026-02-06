@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Minu 🌹</title>
+
+<!-- Google Fonts (SAFE for GitHub Pages) -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --rose-red: #d00000;
+    --gold: #ffd700;
+    --handwritten-font: 'Dancing Script', cursive;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(at 0% 0%, #fff0f3 0%, #ffccd5 50%, #ffafcc 100%);
+    transition: background 1s ease;
+}
+
+/* Final background */
+body.final-bg {
+    background: radial-gradient(circle, #800e13 0%, #4a0404 40%, #000 100%);
+}
+body.final-bg::before {
+    content: '🌹';
+    position: fixed;
+    font-size: 80vh;
+    opacity: 0.1;
+    filter: blur(5px);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Effects */
+.petal { position: fixed; top: -10%; animation: fall linear forwards; }
+.sparkle { position: fixed; font-size: 1.2rem; animation: fadeOut 1s forwards; }
+
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+@keyframes fadeOut { to { opacity: 0; transform: translateY(-20px) scale(1.5); } }
+
+/* Container */
+.container {
+    text-align: center;
+    width: 85%;
+    max-width: 400px;
+    padding: 30px 20px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    transition: 0.5s;
+}
+.container.revealed {
+    background: rgba(0,0,0,0.85);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Button */
+#catchBtn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background: var(--rose-red);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+}
+
+/* Text */
+.message-text {
+    font-family: var(--handwritten-font);
+    font-size: 2.8rem;
+}
+.signature {
+    font-family: var(--handwritten-font);
+    opacity: 0;
+    color: #ffccd5;
+}
+
+/* Heart */
+#heartGift {
+    display: none;
+    font-size: 3.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+    50% { transform: scale(1.3); }
+}
+
+/* Extra */
+#extraNote {
+    display: none;
+    gap: 15px;
+    margin-top: 20px;
+}
+.uploaded-pic {
+    width: 85px;
+    height: 85px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+.note-text {
+    font-family: var(--handwritten-font);
+    color: #ffccd5;
+}
+</style>
+</head>
+
+<body id="body">
+
+<div class="container" id="mainBox">
+    <div id="gameArea">
+        <h1 style="font-family:Dancing Script;color:#d00000;">Catch it, Minu! 🌹</h1>
+        <button id="catchBtn">Catch Me!</button>
+    </div>
+
+    <div id="finalContent" style="display:none;">
+        <div id="typingMessage" class="message-text"></div>
+        <span class="signature" id="sig">By love Kittu</span>
+        <button id="heartGift">💝</button>
+
+        <div id="extraNote">
+            <img src="./photo.jpg" class="uploaded-pic" alt="Memory">
+            <div class="note-text">You caught my heart! ✨</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const btn = document.getElementById("catchBtn");
+const game = document.getElementById("gameArea");
+const final = document.getElementById("finalContent");
+const body = document.body;
+const typing = document.getElementById("typingMessage");
+const heart = document.getElementById("heartGift");
+const extra = document.getElementById("extraNote");
+const sig = document.getElementById("sig");
+
+let count = 0;
+const maxEscapes = 10;
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+    btn.style.position = "fixed";
+    count++;
+}
+
+btn.addEventListener("pointerenter", () => {
+    if (count < maxEscapes) moveButton();
+});
+
+btn.addEventListener("pointerdown", () => {
+    if (count < maxEscapes) moveButton();
+    else reveal();
+});
+
+function reveal() {
+    game.style.display = "none";
+    final.style.display = "block";
+    body.classList.add("final-bg");
+    document.getElementById("mainBox").classList.add("revealed");
+    typeText("Happy Rose Day, Minu 💖", 0);
+}
+
+function typeText(text, i) {
+    if (i < text.length) {
+        typing.textContent += text[i];
+        setTimeout(() => typeText(text, i + 1), 100);
+    } else {
+        sig.style.opacity = 1;
+        heart.style.display = "block";
+    }
+}
+
+heart.addEventListener("pointerdown", () => {
+    heart.style.display = "none";
+    extra.style.display = "flex";
+});
+</script>
+
+</body>
+</html>
